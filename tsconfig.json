@@ -106,5 +106,5 @@
     "skipDefaultLibCheck": false,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": false                                 /* Skip type checking all .d.ts files. */
   },
-  "files": ["runtime.ts", "global.d.ts"]
+  "files": ["jsx-runtime.ts", "global.d.ts"]
 }
