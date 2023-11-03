@@ -1,0 +1,42 @@
+{
+  "name": "telegram-jsx",
+  "version": "1.0.0",
+  "description": "TSX/JSX runtime for telegram bots",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc --project ./tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "exports":{
+    ".": {
+      "types": "./global.d.ts"
+    },
+    "./runtime": {
+      "import": "./runtime.mjs",
+      "require": "./runtime.js",
+      "types": "./runtime.d.ts"
+    } 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexXanderGrib/telegram-jsx.git"
+  },
+  "keywords": [
+    "telegram",
+    "jsx",
+    "tsx",
+    "html"
+  ],
+  "author": "Alexander Gribochkin <me@alexxgrib.me> (https://alexxgrib.me/)",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/AlexXanderGrib/telegram-jsx/issues"
+  },
+  "homepage": "https://github.com/AlexXanderGrib/telegram-jsx#readme",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.5",
+    "rollup": "^4.2.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2"
+  }
+}
