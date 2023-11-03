@@ -1,15 +1,16 @@
 {
   "name": "telegram-jsx",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "TSX/JSX runtime for telegram bots",
   "type": "commonjs",
+  "types": "./index.d.ts",
   "scripts": {
     "build": "rollup -c ./rollup.config.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
     ".": {
-      "types": "./global.d.ts"
+      "types": "./index.d.ts"
     },
     "./jsx-runtime": {
       "import": "./jsx-runtime.mjs",

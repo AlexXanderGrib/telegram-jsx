@@ -12,7 +12,8 @@ TSX/JSX runtime for telegram bots
    ```json
    {
      "jsx": "react-jsx",
-     "jsxImportSource": "telegram-jsx"
+     "jsxImportSource": "telegram-jsx",
+     "include": ["node_modules/telegram-jsx/index.d.ts"]
    }
    ```
 
