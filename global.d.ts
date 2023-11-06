@@ -32,5 +32,6 @@ declare namespace JSX {
       Primitive | Primitive[]
     >;
     pre: WithChildren;
+    blockquote: WithChildren;
   }
 }
