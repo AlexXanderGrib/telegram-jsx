@@ -2,12 +2,16 @@ import { defineConfig } from "rollup";
 import typescript from "@rollup/plugin-typescript";
 
 export default defineConfig({
-  input: "./jsx-runtime.ts",
+  input: ["./index.tsx", "./jsx-runtime.ts", "./jsx-dev-runtime.ts"],
+  cache: true,
+
   output: [
-    { file: "./jsx-runtime.js", format: "cjs" },
-    { file: "./jsx-runtime.mjs", format: "esm" },
-    { file: "./jsx-dev-runtime.js", format: "cjs" },
-    { file: "./jsx-dev-runtime.mjs", format: "esm" }
+    {
+      dir: ".",
+      format: "cjs",
+      generatedCode: { constBindings: true },
+    },
+    { dir: ".", format: "esm", entryFileNames: "[name].mjs" }
   ],
   plugins: [typescript({ tsconfig: "./tsconfig.json" })]
 });

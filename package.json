@@ -1,6 +1,6 @@
 {
   "name": "telegram-jsx",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "TSX/JSX runtime for telegram bots",
   "type": "commonjs",
   "types": "./index.d.ts",
@@ -10,6 +10,8 @@
   },
   "exports": {
     ".": {
+      "import": "./index.mjs",
+      "require": "./index.js",
       "types": "./index.d.ts"
     },
     "./jsx-runtime": {
@@ -29,11 +31,14 @@
   },
   "keywords": [
     "telegram",
+    "message",
+    "component",
     "jsx",
     "tsx",
-    "html"
+    "html",
+    "formatting"
   ],
-  "author": "Alexander Gribochkin <me@alexxgrib.me> (https://alexxgrib.me/)",
+  "author": "Alexander <me@alexxgrib.me> (https://alexxgrib.me/)",
   "license": "Unlicense",
   "bugs": {
     "url": "https://github.com/AlexXanderGrib/telegram-jsx/issues"

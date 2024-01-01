@@ -22,6 +22,8 @@ TSX/JSX runtime for telegram bots
 Now you can create components and use TSX
 
 ```tsx
+import { Paragraph } from "telegram-jsx";
+
 export function Ul({ children }: { children: Iterable<JSX.Child> }) {
   return (
     <>
