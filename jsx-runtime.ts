@@ -18,6 +18,10 @@ function stringifyAndPad(attributes: Record<string, unknown>) {
 }
 
 class Element implements JSX.Element {
+  get _brand(): 'jsx.element' {
+    return 'jsx.element'
+  }
+
   readonly _contents: string;
 
   constructor(contents: string) {

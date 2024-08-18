@@ -4,7 +4,7 @@ const jsxRuntime = require('./jsx-runtime.js');
 
 /// <reference path="./global.d.ts" />
 function Heading({ children }) {
-    return (jsxRuntime.jsx(Paragraph, { children: jsxRuntime.jsx(Text, { bold: true, underline: true, children: [children, ":"] }) }));
+    return (jsxRuntime.jsx(Paragraph, { children: jsxRuntime.jsx("b", { children: [jsxRuntime.jsx("u", { children: children }), ":"] }) }));
 }
 function Paragraph({ children }) {
     return (jsxRuntime.jsx(jsxRuntime.Fragment, { children: [children, "\n"] }));

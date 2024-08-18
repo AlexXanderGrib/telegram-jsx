@@ -1,4 +1,4 @@
-/// <reference path="global.d.ts" />
+/// <reference path="./global.d.ts" />
 export declare function Heading({ children }: {
     children: JSX.Children;
 }): JSX.Element;

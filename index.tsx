@@ -3,9 +3,9 @@
 export function Heading({ children }: { children: JSX.Children }) {
   return (
     <Paragraph>
-      <Text bold underline>
-        {children}:
-      </Text>
+      <b>
+        <u>{children}</u>:
+      </b>
     </Paragraph>
   );
 }

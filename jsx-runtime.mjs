@@ -13,6 +13,9 @@ function stringifyAndPad(attributes) {
     return ` ${text}`;
 }
 class Element {
+    get _brand() {
+        return 'jsx.element';
+    }
     constructor(contents) {
         this._contents = contents;
         Object.freeze(this);

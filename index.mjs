@@ -2,7 +2,7 @@ import { jsx, Fragment } from './jsx-runtime.mjs';
 
 /// <reference path="./global.d.ts" />
 function Heading({ children }) {
-    return (jsx(Paragraph, { children: jsx(Text, { bold: true, underline: true, children: [children, ":"] }) }));
+    return (jsx(Paragraph, { children: jsx("b", { children: [jsx("u", { children: children }), ":"] }) }));
 }
 function Paragraph({ children }) {
     return (jsx(Fragment, { children: [children, "\n"] }));

@@ -1,6 +1,6 @@
 {
   "name": "telegram-jsx",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "TSX/JSX runtime for telegram bots",
   "type": "commonjs",
   "types": "./index.d.ts",
@@ -45,9 +45,9 @@
   },
   "homepage": "https://github.com/AlexXanderGrib/telegram-jsx#readme",
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.5",
-    "rollup": "^4.2.0",
-    "tslib": "^2.6.2",
-    "typescript": "^5.2.2"
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.21.0",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.4"
   }
 }

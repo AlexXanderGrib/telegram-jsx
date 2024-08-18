@@ -4,6 +4,7 @@ declare namespace JSX {
   }
 
   interface Element {
+    readonly _brand: 'jsx.element';
     toString(): string;
   }
 
