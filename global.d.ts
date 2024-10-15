@@ -4,13 +4,14 @@ declare namespace JSX {
   }
 
   interface Element {
-    readonly _brand: 'jsx.element';
+    readonly _brand: "jsx.element";
     toString(): string;
   }
 
   type Primitive = string | boolean | number | null | undefined;
   type Child = Primitive | Element;
   type Children = Child | Child[];
+  type PrimitiveChild = Primitive | Primitive[];
   type WithChildren<T extends Children = Children> = {
     [key in keyof ElementChildrenAttribute]: T;
   };
@@ -29,10 +30,8 @@ declare namespace JSX {
     "tg-spoiler": WithChildren;
     "tg-emoji": { "emoji-id": bigint | string } & WithChildren<string>;
     a: { href: string } & WithChildren;
-    code: { class?: `language-${string}` } & WithChildren<
-      Primitive | Primitive[]
-    >;
+    code: { class?: `language-${string}` } & WithChildren<PrimitiveChild>;
     pre: WithChildren;
-    blockquote: WithChildren;
+    blockquote: WithChildren & { expandable?: boolean };
   }
 }
