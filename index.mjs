@@ -1,6 +1,16 @@
 import { jsx, Fragment } from './jsx-runtime.mjs';
 
 /// <reference path="./global.d.ts" />
+let globalMangleUrls = false;
+function setMangleUrls(value) {
+    globalMangleUrls = value;
+}
+function escapeName(name, mangleUrls = globalMangleUrls) {
+    if (mangleUrls) {
+        return name.replace(/\./g, "․");
+    }
+    return name;
+}
 function Heading({ children }) {
     return (jsx(Paragraph, { children: jsx("b", { children: [jsx("u", { children: children }), ":"] }) }));
 }
@@ -19,32 +29,47 @@ function Ol({ children, alignIndexes = true }) {
             return (jsx(Paragraph, { children: [jsx("code", { children: indexText }), ". ", value] }));
         }) }));
 }
-function Mention({ subject: entity = 0, customName = undefined, ping = true }) {
+function isNumberLike(value) {
+    return (typeof value === "number" ||
+        typeof value === "bigint" ||
+        (typeof value === "object" && !!value && "toBigInt" in value));
+}
+function toNumber(value) {
+    if (typeof value === "number" || typeof value === "bigint") {
+        return value;
+    }
+    return value.toBigInt();
+}
+function Mention({ subject: entity = 0, customName = undefined, ping = true, mangleUrls = globalMangleUrls }) {
     const wrap = (id, name) => {
-        const displayName = customName || name || `👤 Entity №${id}`;
+        id = toNumber(id);
+        const displayName = escapeName(customName || name || `👤 Entity №${id}`, mangleUrls);
         if (!ping) {
             return jsx(Fragment, { children: displayName });
         }
         return jsx("a", { href: `tg://user?id=${id}`, children: displayName });
     };
-    if (typeof entity === "string") {
-        const displayName = customName || `@${entity}`;
+    if (isNumberLike(entity)) {
+        const value = toNumber(entity);
+        return wrap(value, `👤 Entity №${value}`);
+    }
+    else if (typeof entity === "string") {
+        const displayName = escapeName(customName || `@${entity}`, mangleUrls);
         if (!ping) {
             return jsx(Fragment, { children: displayName });
         }
         return jsx("a", { href: `https://t.me/${entity}`, children: displayName });
     }
-    if (typeof entity === "number" || typeof entity === "bigint") {
-        return wrap(entity, `👤 Entity №${entity}`);
-    }
-    if (typeof entity === "object" && entity && "first_name" in entity) {
+    else if (typeof entity === "object" && entity && "first_name" in entity) {
         return wrap(entity.id, `${entity.first_name} ${entity.last_name || ""}`.trim() ||
             `👤 Entity №${entity.id}`);
     }
-    if (typeof entity === "object" && entity && "title" in entity) {
+    else if (typeof entity === "object" && entity && "title" in entity) {
         return wrap(entity.id, entity.title.trim());
     }
-    return jsx(Fragment, { children: customName || `👤 Unknown` });
+    else {
+        return jsx(Fragment, { children: customName || `👤 Unknown` });
+    }
 }
 function Code({ children, multiline = children.toString().includes("\n"), language }) {
     if (language) {
@@ -74,14 +99,14 @@ function Text({ italic = false, bold = false, underline = false, strike = false,
     }
     return element;
 }
-function Notification({ emoji = "⚠️", message, subject, children = [], success, error, comma = true }) {
+function Notification({ emoji = "⚠️", message, subject, children = [], success, error, comma = true, mangleUrls = globalMangleUrls }) {
     if (success) {
         emoji = "✅";
     }
     if (error) {
         emoji = "🛑";
     }
-    return (jsx(Fragment, { children: [jsx("b", { children: [emoji, " • ", subject ? (jsx(Fragment, { children: [jsx(Mention, { subject: subject }), comma ? ", " : " "] })) : null, message] }), " ", children] }));
+    return (jsx(Fragment, { children: [jsx("b", { children: [emoji, " • ", subject ? (jsx(Fragment, { children: [jsx(Mention, { subject: subject, mangleUrls: mangleUrls }), comma ? ", " : " "] })) : null, message] }), " ", children] }));
 }
 
-export { Code, Heading, Mention, Notification, Ol, Paragraph, Text, Ul };
+export { Code, Heading, Mention, Notification, Ol, Paragraph, Text, Ul, setMangleUrls };

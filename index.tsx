@@ -1,5 +1,19 @@
 /// <reference path="./global.d.ts" />
 
+let globalMangleUrls = false;
+
+export function setMangleUrls(value: boolean): void {
+  globalMangleUrls = value;
+}
+
+function escapeName(name: string, mangleUrls = globalMangleUrls): string {
+  if (mangleUrls) {
+    return name.replace(/\./g, "․");
+  }
+
+  return name;
+}
+
 export function Heading({ children }: { children: JSX.Children }) {
   return (
     <Paragraph>
@@ -59,20 +73,44 @@ export function Ol({
   );
 }
 
+type NumberLike = number | bigint | { toBigInt(): number };
+
+function isNumberLike(value: unknown): value is NumberLike {
+  return (
+    typeof value === "number" ||
+    typeof value === "bigint" ||
+    (typeof value === "object" && !!value && "toBigInt" in value)
+  );
+}
+
+function toNumber(value: NumberLike): bigint | number {
+  if (typeof value === "number" || typeof value === "bigint") {
+    return value;
+  }
+
+  return value.toBigInt();
+}
+
 export type MentionSubject =
-  | { id: number | bigint; first_name: string; last_name?: string }
-  | { id: number | bigint; title: string }
-  | number
-  | bigint
+  | { id: NumberLike; first_name: string; last_name?: string }
+  | { id: NumberLike; title: string }
+  | NumberLike
   | string;
 
 export function Mention({
   subject: entity = 0 as MentionSubject,
   customName = undefined as string | undefined,
-  ping = true
+  ping = true,
+  mangleUrls = globalMangleUrls
 }) {
-  const wrap = (id: number | string | bigint, name: string) => {
-    const displayName = customName || name || `👤 Entity №${id}`;
+  const wrap = (id: NumberLike, name: string) => {
+    id = toNumber(id);
+
+    const displayName = escapeName(
+      customName || name || `👤 Entity №${id}`,
+      mangleUrls
+    );
+
     if (!ping) {
       return <>{displayName}</>;
     }
@@ -80,33 +118,28 @@ export function Mention({
     return <a href={`tg://user?id=${id}`}>{displayName}</a>;
   };
 
-  if (typeof entity === "string") {
-    const displayName = customName || `@${entity}`;
+  if (isNumberLike(entity)) {
+    const value = toNumber(entity);
+    return wrap(value, `👤 Entity №${value}`);
+  } else if (typeof entity === "string") {
+    const displayName = escapeName(customName || `@${entity}`, mangleUrls);
 
     if (!ping) {
       return <>{displayName}</>;
     }
 
     return <a href={`https://t.me/${entity}`}>{displayName}</a>;
-  }
-
-  if (typeof entity === "number" || typeof entity === "bigint") {
-    return wrap(entity, `👤 Entity №${entity}`);
-  }
-
-  if (typeof entity === "object" && entity && "first_name" in entity) {
+  } else if (typeof entity === "object" && entity && "first_name" in entity) {
     return wrap(
       entity.id,
       `${entity.first_name} ${entity.last_name || ""}`.trim() ||
         `👤 Entity №${entity.id}`
     );
-  }
-
-  if (typeof entity === "object" && entity && "title" in entity) {
+  } else if (typeof entity === "object" && entity && "title" in entity) {
     return wrap(entity.id, entity.title.trim());
+  } else {
+    return <>{customName || `👤 Unknown`}</>;
   }
-
-  return <>{customName || `👤 Unknown`}</>;
 }
 
 export function Code({
@@ -172,6 +205,7 @@ type NotificationProperties = {
   success?: boolean;
   error?: boolean;
   comma?: boolean;
+  mangleUrls?: boolean;
 } & Partial<JSX.WithChildren>;
 
 export function Notification({
@@ -181,7 +215,8 @@ export function Notification({
   children = [],
   success,
   error,
-  comma = true
+  comma = true,
+  mangleUrls = globalMangleUrls
 }: NotificationProperties) {
   if (success) {
     emoji = "✅";
@@ -198,7 +233,7 @@ export function Notification({
         {" • "}
         {subject ? (
           <>
-            <Mention subject={subject} />
+            <Mention subject={subject} mangleUrls={mangleUrls} />
             {comma ? ", " : " "}
           </>
         ) : null}

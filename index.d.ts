@@ -1,4 +1,5 @@
 /// <reference path="./global.d.ts" />
+export declare function setMangleUrls(value: boolean): void;
 export declare function Heading({ children }: {
     children: JSX.Children;
 }): JSX.Element;
@@ -12,18 +13,22 @@ export declare function Ol({ children, alignIndexes }: {
     children: Iterable<JSX.Child>;
     alignIndexes?: boolean;
 }): JSX.Element;
+type NumberLike = number | bigint | {
+    toBigInt(): number;
+};
 export type MentionSubject = {
-    id: number | bigint;
+    id: NumberLike;
     first_name: string;
     last_name?: string;
 } | {
-    id: number | bigint;
+    id: NumberLike;
     title: string;
-} | number | bigint | string;
-export declare function Mention({ subject: entity, customName, ping }: {
+} | NumberLike | string;
+export declare function Mention({ subject: entity, customName, ping, mangleUrls }: {
     subject?: MentionSubject | undefined;
     customName?: string | undefined;
     ping?: boolean | undefined;
+    mangleUrls?: boolean | undefined;
 }): JSX.Element;
 export declare function Code({ children, multiline, language }: {
     language?: string;
@@ -44,6 +49,7 @@ type NotificationProperties = {
     success?: boolean;
     error?: boolean;
     comma?: boolean;
+    mangleUrls?: boolean;
 } & Partial<JSX.WithChildren>;
-export declare function Notification({ emoji, message, subject, children, success, error, comma }: NotificationProperties): JSX.Element;
+export declare function Notification({ emoji, message, subject, children, success, error, comma, mangleUrls }: NotificationProperties): JSX.Element;
 export {};
