@@ -73,7 +73,7 @@ export function Ol({
   );
 }
 
-type NumberLike = number | bigint | { toBigInt(): number };
+type NumberLike = number | bigint | { toBigInt(): bigint };
 
 function isNumberLike(value: unknown): value is NumberLike {
   return (

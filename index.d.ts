@@ -14,7 +14,7 @@ export declare function Ol({ children, alignIndexes }: {
     alignIndexes?: boolean;
 }): JSX.Element;
 type NumberLike = number | bigint | {
-    toBigInt(): number;
+    toBigInt(): bigint;
 };
 export type MentionSubject = {
     id: NumberLike;
